@@ -62,8 +62,36 @@ public class Grid : MonoBehaviour
         {
             if (column_number + 1 > columns)
             {
+                square_gap_number.x = 0;
+                column_number=0;
+                row_number++;
+                row_moved = false;
 
             }
+
+            var pos_x_offset = _offset.x * column_number + (square_gap_number.x * squaresGap);
+            var pos_y_offset = _offset.y * row_number + (square_gap_number.y * squaresGap);
+
+            if (column_number > 0 && column_number % 3 == 0)
+            {
+                square_gap_number.x++;
+                pos_x_offset += squaresGap;
+            }
+
+            if (row_number > 0 && row_number % 3 == 0 && row_moved == false)
+            {
+                row_moved = true;
+                square_gap_number.y++;
+                pos_y_offset += squaresGap; 
+            }
+
+            square.GetComponent<RectTransform>().anchoredPosition = new Vector2(startPosition.x + pos_x_offset,
+                startPosition.y + pos_y_offset);
+
+            square.GetComponent<RectTransform>().localPosition = new Vector3(startPosition.x + pos_x_offset,
+                startPosition.y + pos_y_offset, 0f);
+
+            column_number++;
         }
     }
 }
